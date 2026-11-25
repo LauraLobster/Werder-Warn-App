@@ -157,6 +157,15 @@ conflict.
 - Changes under `.github/workflows/` are pushed by a human: the agent token
   deliberately has no "Workflows" permission. Commit locally and ask the user
   to push.
+- `main` is protected by a ruleset
+  ([ADR 0002](docs/adr/0002-protect-main-with-ruleset.md)): changes land only
+  through a PR with a green `Analyze and test` check, merged by squash.
+- The PR title becomes the commit message on `main`: write it in English,
+  imperative mood, with the issue number, e.g. `Add home match filter (#3)`.
+- If a branch is behind `main`, merge `main` into it (or use "Update branch"
+  in the PR). Never force-push.
+- Do not rename the `Analyze and test` job in `ci.yaml` without updating the
+  ruleset; otherwise every PR is blocked waiting for a check that never runs.
 
 ## Definition of Done
 
