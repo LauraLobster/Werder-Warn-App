@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Release builds need this to load the schedule from OpenLigaDB. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="werderwarn"
         android:name="${applicationName}"

@@ -68,7 +68,8 @@ Presentation (widgets)  →  Business logic (Bloc/Cubit)  →  Repository  →  
   repositories or are coordinated by the presentation layer.
 - Repositories, data sources and domain logic (e.g. filtering home matches,
   computing the warning time 4 h before kick-off) are pure Dart: no Flutter
-  imports.
+  imports. Plugin-backed storage (e.g. `shared_preferences`) is the only
+  exception and stays behind an interface such as `HomeMatchCache`.
 - Inject time, network and storage. Never call `DateTime.now()` directly in
   logic; pass a clock so tests are repeatable.
 
@@ -81,18 +82,27 @@ lib/
   main.dart
   app/                      # app widget, theme, repository wiring
     view/app.dart
-  <feature>/                # e.g. schedule/, notifications/
-    bloc/ or cubit/         # <feature>_bloc.dart, _event.dart, _state.dart
+  <feature>/                # one feature per epic, e.g. home_match_warning/ (#1)
+    bloc/ or cubit/         # <name>_cubit.dart with <name>_state.dart as part
     view/                   # <feature>_page.dart (provides the bloc), <feature>_view.dart
     widgets/
     <feature>.dart          # barrel file
   data/                     # shared, not per feature
-    <name>_api/             # data source: API client and its models (pure Dart)
-    <name>_repository/      # repository and domain models (pure Dart)
-test/                       # mirrors lib/ one to one
+    <name>_api/             # data source: API client and its models
+      <name>_api.dart       #   barrel file
+      src/
+    <name>_repository/      # repository and domain models
+      <name>_repository.dart  # barrel file
+      src/
+test/                       # mirrors lib/ one to one; fixtures/ and helpers/
 ```
 
-`data/*` may later move into separate packages under `packages/`.
+- **A feature is an epic.** Stories of an epic do not get their own feature
+  folder; their code lives in the epic's feature or in `data/`. Placeholder
+  screens also live in the epic's feature.
+- A **barrel file** only re-exports the public types of a folder. Import other
+  modules through their barrel file, never through their `src/`.
+- `data/*` may later move into separate packages under `packages/`.
 
 ### Bloc conventions
 

@@ -35,3 +35,10 @@ isolation. The project already uses `very_good_analysis`.
 - Each feature is self-contained, which matches the story-based backlog.
 - If the data layer grows, `lib/data/*` can be moved into packages under
   `packages/` without changing the dependency rules.
+
+## Addendum (2026-11-25, #2): features map to epics
+
+A feature folder in `lib/` corresponds to one epic, e.g. `home_match_warning/`
+for epic #1. Stories get no feature folder of their own; temporary screens such
+as the home match list live in the epic's feature until it is replaced. Data
+modules in `lib/data/` follow the package layout of a barrel file plus `src/`.
