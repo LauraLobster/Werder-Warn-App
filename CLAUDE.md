@@ -19,6 +19,16 @@ flutter test test/<path>/<file>_test.dart  # run a single test file
 dart format .                            # format code
 ```
 
+CI (`.github/workflows/ci.yaml`) runs on every PR and on every push to `main`.
+Run the same checks locally before pushing:
+
+```bash
+flutter pub get --enforce-lockfile
+dart format --output=none --set-exit-if-changed .
+flutter analyze
+flutter test
+```
+
 In the sandbox there is no Android SDK or Xcode: do not try `flutter run` or
 `flutter build`. Analyze and test are the feedback loop.
 
@@ -144,6 +154,9 @@ conflict.
   (analyze/test output), and `Closes #<n>`.
 - `origin` uses SSH; from the sandbox push via HTTPS:
   `git push https://github.com/LauraLobster/Werder-Warn-App.git <branch>`.
+- Changes under `.github/workflows/` are pushed by a human: the agent token
+  deliberately has no "Workflows" permission. Commit locally and ask the user
+  to push.
 
 ## Definition of Done
 
@@ -152,7 +165,7 @@ An issue is done when:
 - [ ] its acceptance criteria are covered by tests,
 - [ ] the code was checked against the Clean Code rules in the refactor step,
 - [ ] `flutter analyze` reports no issues,
-- [ ] `flutter test` passes (and CI is green once #13 is in place),
+- [ ] `flutter test` passes and CI is green,
 - [ ] the PR references the issue with `Closes #<n>`,
 - [ ] decisions are recorded as an ADR or in the README,
 - [ ] no secrets are in the repository.
